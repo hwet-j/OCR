@@ -5,8 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-image = cv2.imread("images/300.jpg")
-image_gray = cv2.imread("images/300.jpg", cv2.IMREAD_GRAYSCALE)
+image = cv2.imread("images/test.jpg")
+image_gray = cv2.imread("images/test.jpg", cv2.IMREAD_GRAYSCALE)
 
 # plt.imshow(image)
 # plt.show()
@@ -52,9 +52,13 @@ contours, _ = cv2.findContours(closed.copy(),cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX
 total = 0
 # print(contours)
 
+# 배경 색 검정으로
+img_binary = cv2.bitwise_not(image_gray)
+
 # 외곽선 그리는 용도. 이미지에 그리기 때문에 이 코드 적용하면 원래 이미지에
 # 초록색 선 생김
-contours_image = cv2.drawContours(image, contours, -1, (0,255,0), 3)
+# cv2.drawContours(이미지, [윤곽선], 윤곽선 인덱스, (B, G, R), 두께, 선형 타입)
+contours_image = cv2.drawContours(img_binary, contours, -1, (255,255,255), 3)
 cv2.imshow('contours_image', contours_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
@@ -63,7 +67,6 @@ contours_xy = np.array(contours)
 contours_xy.shape
 
 model = tf.keras.models.load_model('mnist(CNN).hdf5')
-
 
 # cv2.boundingRect()함수는 인자로 받은 contour에 외접하고 똑바로 세워진 직사각형의 좌상단 꼭지점 좌표(x,y)와 가로,세로 폭을 리턴
 for each in contours:
@@ -75,30 +78,25 @@ for each in contours:
     test_cut = contours_image[y:y+h, x:x+w]
     print(test_cut)
     
-    cv2.imshow('cut',test_cut)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-'''
-for i in range(10):
-    my_img = cv2.imread('images/num'+str(i)+'.png', cv2.IMREAD_GRAYSCALE)
-    # plt.imshow(my_img)
-    # plt.show()
-    
-    my_img = cv2.resize(255-my_img, (28, 28))
-    test_my_img = my_img.flatten() / 255.0
+    test_cut = cv2.resize(255-test_cut, (28, 28))
+    test_my_img = test_cut.flatten() / 255.0
     #print(test_my_img)
     # 배경이 0으로 되어있는 모델이라 변경
-    test_my_img = np.where(test_my_img == 1, 2, test_my_img)
-    test_my_img = np.where(test_my_img == 0, 1, test_my_img)
-    test_my_img = np.where(test_my_img == 2, 0, test_my_img)
+    # test_my_img = np.where(test_my_img == 1, 2, test_my_img)
+    # test_my_img = np.where(test_my_img == 0, 1, test_my_img)
+    # test_my_img = np.where(test_my_img == 2, 0, test_my_img)
     #print(test_my_img)
     
     test_my_img = test_my_img.reshape((-1, 28, 28, 1))
-    # print(test_my_img)
+    print(test_my_img)
     print('The Answer is ', model.predict_classes(test_my_img))
-'''
 
+    cv2.imshow('cut',test_cut)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     
+    
+
 # (514, 590, 59, 79)
 # (643, 586, 76, 94)
 # (385, 582, 107, 98)
@@ -111,7 +109,6 @@ for i in range(10):
 # (694, 156, 22, 116)
 # (511, 155, 80, 125)
 # (767, 146, 73, 138)
-
 
 
 # https://pinkwink.kr/1125?category=769346
