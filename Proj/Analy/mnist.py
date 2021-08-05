@@ -126,7 +126,7 @@ for i in range(10):
     # print(data)
     
     new_pred = model.predict(data)
-    print('new_pred : ', new_pred)
+#     print('new_pred : ', new_pred)
     print(np.argmax(new_pred, 1))
 
 # 참고 - https://saynot.tistory.com/entry/Deep-Learning-MNIST-%EC%86%90%EA%B8%80%EC%94%A8-%EC%88%AB%EC%9E%90-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%9D%B8%EC%8B%9D%ED%95%B4%EB%B3%B4%EA%B8%B0
