@@ -95,6 +95,7 @@ for each in contours:
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     
+    # https://pythonq.com/so/c%2B%2B/550878
     
 
 # (514, 590, 59, 79)
